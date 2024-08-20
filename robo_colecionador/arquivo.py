@@ -9,50 +9,49 @@ while True:
     for i in range(N):
         linha = input()
         mapa.append(linha)
+        busca = re.search("[A-Z]", linha);
+        if busca:
+            rp["x"] = i
+            rp["y"] = busca.start()
+            rp['ori'] = busca.group()
 
             
     
     def eAndavel(x, y):
-        try:
-            return not mapa[x][y] == "#"
-        except:
+        if (x < 0 or x >= N) or (y < 0 or y >= M):
             return False
+        return not mapa[x][y] == "#"
+        
     insts = input()
     resposta = 0
     direcao = rp["ori"]
+    
+    rotacao_direita = {"N": "L", "L":"S", "S":"O", "O":"N"}
+    rotacao_esquerda = {"N": "O", "L":"N", "S":"L", "O":"S"}
+    finded_flags = set()
+    
     for i in range(len(insts)):
+        (x, y) = rp["x"], rp["y"]
         instrucao = insts[i]
         if instrucao == "F":
-            (x, y) = rp["x"], rp["y"]
-            if rp['ori'] == "N" and x > 0 and eAndavel(x - 1, y):
+            
+            if direcao == "N" and x > 0 and eAndavel(x - 1, y):
                 rp["x"] -= 1
-            if rp['ori'] == "S" and x < (M - 1) and eAndavel(x + 1, y):
+            if direcao == "S" and x < (M - 1) and eAndavel(x + 1, y):
                 rp["x"] += 1
-            if rp['ori'] == "L" and y < (M - 1) and eAndavel(x, y + 1):
+            if direcao == "L" and y < (M - 1) and eAndavel(x, y + 1):
                 rp["y"] += 1
-            if rp['ori'] == "O" and y > 0 and eAndavel(x, y - 1):
+            if direcao == "O" and y > 0 and eAndavel(x, y - 1):
                 rp["y"] -= 1
         else:
             if instrucao == "D":
-                if rp["ori"] == "N":
-                    rp["ori"] = "L"
-                elif rp["ori"] == "L":
-                    rp["ori"] = "S"
-                elif rp["ori"] == "O":
-                    rp["ori"] = "N"
-                elif rp["ori"] == "S":
-                    rp["ori"] = "O"
+                direcao = rotacao_direita[direcao]
             else:
-                if rp["ori"] == "N":
-                    rp["ori"] = "O"
-                elif rp["ori"] == "O":
-                    rp["ori"] = "S"
-                elif rp["ori"] == "S":
-                    rp["ori"] = "L"
-                elif rp["ori"] == "L":
-                    rp["ori"] = "N"
+                direcao = rotacao_esquerda[direcao]
         if mapa[rp["x"]][rp["y"]] == "*":
-            resposta+=1
-            mapa[rp["x"]][rp["y"]] = "."
+            tupla = (rp["x"], rp["y"])
+            if tupla not in finded_flags:
+                finded_flags.add((rp["x"], rp["y"]))
+                resposta+=1
         
     print(resposta)
