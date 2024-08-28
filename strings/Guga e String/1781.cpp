@@ -30,15 +30,11 @@ vector<Letter> separateLetter(string &text, bool vogals){
 }
 
 void tranform_string(string &text, int deslocamento, bool vogais){
-    vector<Letter> lletter = separateLetter(text, true);
+    vector<Letter> lletter = separateLetter(text, vogais);
     int i = 0;
 
     for(Letter letter : lletter){
         int segunda_pos = i;
-        if (lletter.size()&1){
-            cout << "PAAAAAAAAAAA";
-            segunda_pos = (i + 2) % lletter.size();
-        }
         int target_pos = (segunda_pos + deslocamento) % lletter.size();
         text[letter.pos] = lletter[target_pos].value;
         i++;
@@ -47,9 +43,9 @@ void tranform_string(string &text, int deslocamento, bool vogais){
 
 
 int main(){
-    int numTests;
+    int numTests, counter;
     cin >> numTests;
-
+    counter = 1;
     while (numTests--) {
         string text;
         cin >> text;
@@ -57,6 +53,7 @@ int main(){
         int numInstructions;
         cin >> numInstructions;
 
+        cout << "Caso #" << counter << ":" << endl;
         while (numInstructions--) {
             int tipo, passos;
             cin >> tipo;
@@ -74,6 +71,8 @@ int main(){
                 break;
             }
         }
+
+        counter+=1;
     }
     return 0;
 }
