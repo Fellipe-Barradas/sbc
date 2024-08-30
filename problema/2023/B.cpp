@@ -1,18 +1,20 @@
 #include <iostream>
-#include <cmath>
 
 using namespace std;
 
 int main() {
-    double v, p, total;
-    cin >> v >> p;
-    total = v * p;
-    for (double i = 10; i < 100; i += 10) {
-        double prod = total * i;
-        long long calc = ceil(prod / 100);
-        cout << calc;
-        if (i != 90) cout << " ";
+    int N, CP, p;
+    bool isW = true;
+    cin >> N;
+    cin >> CP;
+    N--;
+    while(N--){
+        cin >> p;
+        if(p > CP){
+            isW = false;
+            break;
+        }
     }
-    cout << endl;
-    return 0;
+
+    cout << (isW ? 'S' : 'N') << endl;
 }
